@@ -20,7 +20,14 @@ export async function POST(req: NextRequest) {
     messages: [
       {
         role: "system",
-        content: `You are a helpful assistant. Answer questions based ONLY on the context below. If the answer is not in the context, say you don't know.\n\nContext:\n${context}`,
+        content: `You are a helpful assistant for this website. Answer the user's questions naturally and conversationally, as if you know this information directly.
+
+      Never mention "the context", "the provided information", "based on the text", or any reference to how you received the information. Just answer naturally.
+
+      If the answer is not available, say: "I don't have that information. You can contact us directly for more details."
+
+      Information:
+      ${context}`,
       },
       { role: "user", content: message },
     ],

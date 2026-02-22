@@ -5,7 +5,6 @@ import { useChatStore } from "@/store/chatStore";
 import { MessageBubble } from "./MessageBubble";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import axios from "axios";
 
@@ -82,7 +81,7 @@ export function ChatWidget() {
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1 px-4 py-3">
+          <div className="flex-1 overflow-y-auto px-4 py-3 min-h-0">
             {messages.length === 0 && (
               <p className="text-zinc-500 text-sm text-center mt-8">
                 Ask me anything about this page.
@@ -98,7 +97,7 @@ export function ChatWidget() {
               </div>
             )}
             <div ref={bottomRef} />
-          </ScrollArea>
+          </div>
 
           {/* Input */}
           <div className="px-4 py-3 border-t border-zinc-700 flex gap-2">
