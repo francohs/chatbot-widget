@@ -4,7 +4,7 @@ A production-ready RAG (Retrieval-Augmented Generation) chatbot that lets users 
 
 ## Live Demo
 
-[[chatbot-widget-plum.vercel.app](https://chatbot-widget-plum.vercel.app/)](https://chatbot-widget-plum.vercel.app)
+[chatbot-widget-plum.vercel.app](https://chatbot-widget-plum.vercel.app/)
 
 Paste any URL, wait 10 to 20 seconds, and ask questions about its content.
 
