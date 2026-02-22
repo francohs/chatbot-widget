@@ -12,7 +12,7 @@ import axios from "axios";
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
-  const { messages, chunks, isLoading, addMessage, setLoading } =
+  const { messages, chunks, isLoading, addMessage, setLoading, reset } =
     useChatStore();
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -65,12 +65,20 @@ export function ChatWidget() {
                 AI Assistant
               </span>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-zinc-400 hover:text-zinc-100 transition-colors"
-            >
-              <X size={16} />
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={reset}
+                className="text-zinc-500 hover:text-zinc-300 text-xs transition-colors"
+              >
+                Try another URL
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-zinc-400 hover:text-zinc-100 transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}

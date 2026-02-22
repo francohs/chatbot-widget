@@ -10,6 +10,7 @@ interface ChatStore {
   setChunks: (chunks: Chunk[]) => void;
   setLoading: (value: boolean) => void;
   setIngested: (value: boolean) => void;
+  reset: () => void;
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -22,4 +23,6 @@ export const useChatStore = create<ChatStore>((set) => ({
   setChunks: (chunks) => set({ chunks }),
   setLoading: (value) => set({ isLoading: value }),
   setIngested: (value) => set({ isIngested: value }),
+  reset: () =>
+    set({ messages: [], chunks: [], isLoading: false, isIngested: false }),
 }));
