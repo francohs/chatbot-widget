@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Chatbot Widget
 
-## Getting Started
+A production-ready RAG (Retrieval-Augmented Generation) chatbot that lets users chat with the content of any website in real time.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[[chatbot-widget-plum.vercel.app](https://chatbot-widget-plum.vercel.app/)](https://chatbot-widget-plum.vercel.app)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Paste any URL, wait 10 to 20 seconds, and ask questions about its content.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What it does
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Most AI chatbots answer from general knowledge and hallucinate when asked about specific business content. This widget solves that by grounding every answer exclusively in the content of a given website. If the answer is not on the page, the chatbot says so.
 
-## Learn More
+This makes it directly useful for:
 
-To learn more about Next.js, take a look at the following resources:
+- Customer support bots trained on a company's documentation
+- Product assistants that answer questions about a specific service
+- Internal tools that let teams query knowledge bases in plain language
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How it works
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. The user pastes a URL
+2. The backend fetches and cleans the page content
+3. The text is split into overlapping chunks and converted into vector embeddings using OpenAI
+4. When the user asks a question, the most semantically relevant chunks are retrieved via cosine similarity search
+5. Those chunks are sent to GPT-4o as context, which generates a grounded answer
 
-## Deploy on Vercel
+## Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend:** Next.js, TypeScript, TailwindCSS, shadcn/ui, Zustand
+- **Backend:** Next.js API Routes, Node.js
+- **AI:** OpenAI GPT-4o, text-embedding-3-small
+- **Deployment:** Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Key Technical Decisions
+
+**No vector database.** Embeddings are stored in memory on the client side and sent with each request. This eliminates infrastructure complexity for single-session use cases while keeping the architecture easy to extend with pgvector or Pinecone when scale requires it.
+
+**Chunk overlap.** Each text chunk shares 50 words with the previous one to prevent meaning from being lost at boundaries, improving retrieval accuracy on longer pages.
+
+**Client-side chunk storage via Zustand.** The ingested knowledge base lives in the browser session, making the app fully stateless on the backend and trivially scalable.
+
+## About
+
+Built by [Franco Hormazabal](https://www.upwork.com/freelancers/~01b21c49f34db9bf03?mp_source=share), a Full Stack Engineer specialized in React, Node.js, and AI integrations.
+
+Available for freelance work on Upwork.
