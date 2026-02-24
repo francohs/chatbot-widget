@@ -41,7 +41,7 @@ function useCyclingMessage(active: boolean) {
 export function IngestForm() {
   const [url, setUrl] = useState("");
   const [state, setState] = useState<IngestState>({ status: "idle" });
-  const { setChunks, setIngested } = useChatStore();
+  const { setChunks, setIngested, setSessionId } = useChatStore();
   const loadingMessage = useCyclingMessage(state.status === "loading");
 
   async function handleIngest() {
@@ -50,6 +50,7 @@ export function IngestForm() {
     try {
       const { data } = await axios.post("/api/ingest", { url });
       setChunks(data.chunks);
+      setSessionId(data.sessionId);
       setIngested(true);
       setState({ status: "success" });
     } catch (err) {

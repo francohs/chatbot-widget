@@ -11,8 +11,15 @@ import axios from "axios";
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
-  const { messages, chunks, isLoading, addMessage, setLoading, reset } =
-    useChatStore();
+  const {
+    messages,
+    chunks,
+    isLoading,
+    sessionId,
+    addMessage,
+    setLoading,
+    reset,
+  } = useChatStore();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom on new message
@@ -32,6 +39,7 @@ export function ChatWidget() {
       const { data } = await axios.post("/api/chat", {
         message: trimmed,
         chunks,
+        sessionId,
       });
       addMessage({ role: "assistant", content: data.answer });
     } catch {

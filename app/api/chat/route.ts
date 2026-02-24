@@ -2,17 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getEmbedding } from "@/lib/embed";
 import { findRelevantChunks } from "@/lib/search";
+import { supabaseServer } from "@/lib/supabase/server";
 import { Chunk } from "@/types";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function POST(req: NextRequest) {
-  const { message, chunks }: { message: string; chunks: Chunk[] } =
-    await req.json();
+  const {
+    message,
+    chunks,
+    sessionId,
+  }: { message: string; chunks: Chunk[]; sessionId: string } = await req.json();
 
   const queryEmbedding = await getEmbedding(message);
   const relevantChunks = findRelevantChunks(queryEmbedding, chunks);
-
   const context = relevantChunks.join("\n\n");
 
   const response = await openai.chat.completions.create({
@@ -33,7 +36,13 @@ export async function POST(req: NextRequest) {
     ],
   });
 
-  return NextResponse.json({
-    answer: response.choices[0].message.content,
-  });
+  const answer = response.choices[0].message.content ?? "";
+
+  // Log both turns to Supabase before returning the response
+  await supabaseServer.from("messages").insert([
+    { session_id: sessionId, role: "user", content: message },
+    { session_id: sessionId, role: "assistant", content: answer },
+  ]);
+
+  return NextResponse.json({ answer });
 }
