@@ -43,6 +43,6 @@ This makes it directly useful for:
 
 ## About
 
-Built by [Franco Hormazabal](https://www.upwork.com/freelancers/francohormazabal), a Full Stack Engineer specialized in React, Node.js, and AI integrations.
+Built by Franco Hormazabal, a Full Stack Engineer with a strong background in Full Stack production systems. Currently expanding into React and AI integrations.
 
-Available for freelance work on Upwork.
+[linkedin.com/in/franco-hormazabal](https://www.linkedin.com/in/franco-hormazabal)
